@@ -1,0 +1,49 @@
+<h1 class="page-title">Stores</h1>
+<p class="subtitle">Approve or reject seller stores</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card">
+  <div class="ss-card-header">
+    <h2>All stores ({{ stores.length }})</h2>
+    <button class="btn btn-sm btn-outline-secondary" (click)="load()">
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr>
+          <th>Store</th><th>Seller</th><th>Category</th><th>Rating</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of stores">
+          <td>#{{ s.storeID }}</td>
+          <td>{{ s.sellerName }} <span class="text-muted-2">({{ s.storeName }})</span></td>
+          <td>{{ s.categoryFocus }}</td>
+          <td><i class="bi bi-star-fill text-warning"></i> {{ s.rating | number:'1.0-1' }}</td>
+          <td><span class="badge-status" [ngClass]="getStatusClass(s.status)">{{ s.status }}</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline-success me-1"
+                    *ngIf="s.status === 'Pending'"
+                    (click)="approve(s.storeID)">Approve</button>
+            <button class="btn btn-sm btn-outline-danger"
+                    *ngIf="s.status === 'Pending'"
+                    (click)="reject(s.storeID)">Reject</button>
+            <span *ngIf="s.status !== 'Pending'" class="text-muted-2">—</span>
+          </td>
+        </tr>
+        <tr *ngIf="stores.length === 0">
+          <td colspan="6" class="empty-row">No stores yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

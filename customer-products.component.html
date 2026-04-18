@@ -1,0 +1,56 @@
+<h1 class="page-title">Browse products</h1>
+<p class="subtitle">Filter by category and add items to your cart</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card">
+  <div class="row g-3 align-items-end">
+    <div class="col-md-6">
+      <label class="form-label">Filter by category</label>
+      <select class="form-select" [(ngModel)]="selectedCategoryId" (change)="filterByCategory()">
+        <option [ngValue]="null">All categories</option>
+        <option *ngFor="let c of categories" [ngValue]="c.categoryID">
+          {{ c.name }} <span *ngIf="c.parentCategoryName">({{ c.parentCategoryName }})</span>
+        </option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-outline-secondary w-100" (click)="loadProducts(); selectedCategoryId = null">
+        <i class="bi bi-x-circle"></i> Clear filter
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="text-center py-4 text-muted-2">
+  <i class="bi bi-hourglass-split"></i> Loading products...
+</div>
+
+<div class="row g-3" *ngIf="!loading">
+  <div class="col-lg-4 col-md-6" *ngFor="let p of products">
+    <div class="product-card">
+      <div class="product-img">
+        <i class="bi bi-box-seam"></i>
+      </div>
+      <div class="product-body">
+        <h3>{{ p.name }}</h3>
+        <div class="product-sku text-muted-2">SKU: {{ p.sku }}</div>
+        <div class="product-price">₹{{ p.price | number:'1.0-2' }}</div>
+        <button class="btn btn-primary w-100 mt-2"
+                (click)="addToCart(p)"
+                [disabled]="addingProductId === p.productID">
+          <i class="bi bi-cart-plus"></i>
+          <span *ngIf="addingProductId !== p.productID"> Add to cart</span>
+          <span *ngIf="addingProductId === p.productID"> Adding...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12" *ngIf="products.length === 0">
+    <div class="ss-card text-center">
+      <p class="mb-0 text-muted-2">No products found.</p>
+    </div>
+  </div>
+</div>

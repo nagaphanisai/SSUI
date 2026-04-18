@@ -1,0 +1,48 @@
+<h1 class="page-title">Inventory</h1>
+<p class="subtitle">Set stock and reorder thresholds for your products</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card" *ngIf="loading">
+  <p class="text-muted-2 mb-0"><i class="bi bi-hourglass-split"></i> Loading your products...</p>
+</div>
+
+<div class="ss-card" *ngIf="!loading && products.length === 0">
+  <p class="mb-0">You don't have any products yet. Add products first from the
+    <a routerLink="/seller/products">Products</a> page.</p>
+</div>
+
+<div class="ss-card" *ngIf="!loading && products.length > 0" style="max-width: 640px;">
+  <div class="ss-card-header"><h2>Manage inventory</h2></div>
+
+  <div class="mb-3">
+    <label class="form-label">Select product</label>
+    <select class="form-select" [(ngModel)]="selectedProductId" (change)="onProductChange()">
+      <option [ngValue]="null">-- Choose a product --</option>
+      <option *ngFor="let p of products" [ngValue]="p.productID">
+        #{{ p.productID }} — {{ p.name }} ({{ p.sku }})
+      </option>
+    </select>
+  </div>
+
+  <div *ngIf="selectedProductId">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Available quantity</label>
+        <input type="number" class="form-control" [(ngModel)]="availableQuantity" min="0">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Reorder threshold</label>
+        <input type="number" class="form-control" [(ngModel)]="reorderThreshold" min="0">
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <button class="btn btn-primary" (click)="saveInventory()" [disabled]="saving">
+        <span *ngIf="!saving"><i class="bi bi-save"></i> Save inventory</span>
+        <span *ngIf="saving">Saving...</span>
+      </button>
+    </div>
+  </div>
+</div>

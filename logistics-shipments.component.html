@@ -1,0 +1,105 @@
+<h1 class="page-title">Shipments</h1>
+<p class="subtitle">Create shipments for packed orders and update delivery status</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="action-bar">
+  <button class="btn btn-primary" (click)="toggleForm()" [disabled]="readyOrders.length === 0">
+    <i class="bi" [ngClass]="showForm ? 'bi-x-circle' : 'bi-plus-circle'"></i>
+    {{ showForm ? 'Cancel' : 'Create shipment' }}
+  </button>
+</div>
+
+<div class="ss-card" *ngIf="showForm">
+  <div class="ss-card-header"><h2>New shipment</h2></div>
+  <form (ngSubmit)="createShipment()">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Packed order</label>
+        <select class="form-select" [(ngModel)]="newOrderId" name="orderId">
+          <option [ngValue]="null">-- Select an order --</option>
+          <option *ngFor="let o of readyOrders" [ngValue]="o.orderID">
+            #{{ o.orderID }} — ₹{{ o.totalAmount | number:'1.0-2' }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Carrier</label>
+        <input type="text" class="form-control" [(ngModel)]="newCarrier" name="carrier"
+               placeholder="DHL, FedEx, BlueDart...">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Tracking number</label>
+        <input type="text" class="form-control" [(ngModel)]="newTrackingNumber" name="trackingNumber">
+      </div>
+    </div>
+    <div class="mt-3">
+      <button class="btn btn-primary" type="submit" [disabled]="saving">
+        <span *ngIf="!saving">Create shipment</span>
+        <span *ngIf="saving">Creating...</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="ss-card" *ngIf="readyOrders.length === 0 && !showForm">
+  <p class="mb-0 text-muted-2">
+    <i class="bi bi-info-circle"></i>
+    No packed orders awaiting shipment.
+  </p>
+</div>
+
+<div class="ss-card">
+  <div class="ss-card-header">
+    <h2>All shipments ({{ shipments.length }})</h2>
+    <button class="btn btn-sm btn-outline-secondary" (click)="loadAll()">
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr>
+          <th>Shipment</th><th>Order</th><th>Carrier</th><th>Tracking</th>
+          <th>Dispatched</th><th>Delivered</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of shipments">
+          <td>#{{ s.shipmentID }}</td>
+          <td>#{{ s.orderID }}</td>
+          <td>{{ s.carrier }}</td>
+          <td>{{ s.trackingNumber }}</td>
+          <td>{{ s.dispatchDate | date:'short' }}</td>
+          <td>{{ s.deliveryDate ? (s.deliveryDate | date:'short') : '—' }}</td>
+          <td><span class="badge-status" [ngClass]="getStatusClass(s.status)">{{ s.status }}</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary"
+                    *ngIf="canMarkShipped(s.status)"
+                    (click)="updateStatus(s, 'Shipped')">
+              <i class="bi bi-truck"></i> Mark Shipped
+            </button>
+            <span *ngIf="!canMarkShipped(s.status)" class="text-muted-2">—</span>
+          </td>
+        </tr>
+        <tr *ngIf="shipments.length === 0">
+          <td colspan="8" class="empty-row">No shipments yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-3">
+    <small class="text-muted-2">
+      <i class="bi bi-info-circle"></i>
+      Workflow: Seller marks order as <strong>Packed</strong> → Logistics creates shipment and marks it
+      <strong>Shipped</strong> → Seller marks the order as <strong>Delivered</strong>.
+    </small>
+  </div>
+</div>

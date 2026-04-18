@@ -1,0 +1,37 @@
+<div class="app-layout">
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <i class="bi bi-shield-lock"></i>
+      <span>Admin Panel</span>
+    </div>
+    <ul class="nav-list">
+      <li><a routerLink="/admin/dashboard" routerLinkActive="active"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li><a routerLink="/admin/sellers" routerLinkActive="active"><i class="bi bi-shop"></i> Sellers</a></li>
+      <li><a routerLink="/admin/stores" routerLinkActive="active"><i class="bi bi-shop-window"></i> Stores</a></li>
+      <li><a routerLink="/admin/products" routerLinkActive="active"><i class="bi bi-box-seam"></i> Products</a></li>
+      <li><a routerLink="/admin/customers" routerLinkActive="active"><i class="bi bi-people"></i> Customers</a></li>
+      <li><a routerLink="/admin/logistics-users" routerLinkActive="active"><i class="bi bi-truck"></i> Logistics users</a></li>
+      <li><a routerLink="/admin/categories" routerLinkActive="active"><i class="bi bi-tags"></i> Categories</a></li>
+      <li><a routerLink="/admin/commission" routerLinkActive="active"><i class="bi bi-percent"></i> Commission</a></li>
+      <li><a routerLink="/admin/policies" routerLinkActive="active"><i class="bi bi-file-text"></i> Policies</a></li>
+      <li><a routerLink="/admin/disputes" routerLinkActive="active"><i class="bi bi-exclamation-triangle"></i> Disputes</a></li>
+      <li><a routerLink="/admin/returns" routerLinkActive="active"><i class="bi bi-arrow-return-left"></i> Returns</a></li>
+    </ul>
+  </nav>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="topbar-title">ShopSphere — Admin</div>
+      <div class="topbar-user">
+        <span class="user-name"><i class="bi bi-person-circle"></i> {{ userName || 'Admin' }}</span>
+        <button class="btn btn-sm btn-outline-danger" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

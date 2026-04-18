@@ -1,0 +1,61 @@
+<h1 class="page-title">Dashboard</h1>
+<p class="subtitle">Overview of your stores, products, and sales</p>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3 col-sm-6">
+    <div class="stat-tile">
+      <div class="stat-icon bg-primary-soft"><i class="bi bi-shop-window"></i></div>
+      <div>
+        <div class="stat-label">My Stores</div>
+        <div class="stat-value">{{ totalStores }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-6">
+    <div class="stat-tile">
+      <div class="stat-icon bg-success-soft"><i class="bi bi-box-seam"></i></div>
+      <div>
+        <div class="stat-label">Products</div>
+        <div class="stat-value">{{ totalProducts }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-6">
+    <div class="stat-tile">
+      <div class="stat-icon bg-warning-soft"><i class="bi bi-receipt"></i></div>
+      <div>
+        <div class="stat-label">Order Items</div>
+        <div class="stat-value">{{ totalOrders }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-6">
+    <div class="stat-tile">
+      <div class="stat-icon bg-danger-soft"><i class="bi bi-currency-rupee"></i></div>
+      <div>
+        <div class="stat-label">Net Revenue</div>
+        <div class="stat-value">₹{{ revenue | number:'1.0-2' }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ss-card">
+  <div class="ss-card-header">
+    <h2>Quick info</h2>
+  </div>
+  <p class="mb-2"><strong>Commission:</strong> {{ commissionPct }}% (deducted from delivered order totals)</p>
+  <p class="mb-0 text-muted-2">The revenue shown above is after commission has been deducted.</p>
+</div>
+
+<div class="ss-card">
+  <div class="ss-card-header">
+    <h2>Quick actions</h2>
+  </div>
+  <div class="d-flex gap-2 flex-wrap">
+    <a class="btn btn-outline-primary" routerLink="/seller/stores"><i class="bi bi-plus-circle"></i> Add a store</a>
+    <a class="btn btn-outline-primary" routerLink="/seller/products"><i class="bi bi-box-seam"></i> Add a product</a>
+    <a class="btn btn-outline-primary" routerLink="/seller/inventory"><i class="bi bi-boxes"></i> Manage inventory</a>
+    <a class="btn btn-outline-primary" routerLink="/seller/orders"><i class="bi bi-receipt"></i> View orders</a>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<h1 class="page-title">Products</h1>
+<p class="subtitle">Add products to your approved stores</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-alert info" *ngIf="stores.length === 0 && !loading">
+  You don't have any approved stores yet. Go to <a routerLink="/seller/stores">My Stores</a> and
+  wait for admin approval before adding products.
+</div>
+
+<div class="action-bar">
+  <button class="btn btn-primary" (click)="toggleForm()" [disabled]="stores.length === 0">
+    <i class="bi" [ngClass]="showForm ? 'bi-x-circle' : 'bi-plus-circle'"></i>
+    {{ showForm ? 'Cancel' : 'Add a product' }}
+  </button>
+</div>
+
+<div class="ss-card" *ngIf="showForm">
+  <div class="ss-card-header"><h2>New product</h2></div>
+  <form (ngSubmit)="createProduct()">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" name="name" [(ngModel)]="name">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Price (₹)</label>
+        <input type="number" class="form-control" name="price" [(ngModel)]="price" min="0">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">SKU</label>
+        <input type="text" class="form-control" name="sku" [(ngModel)]="sku">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Store</label>
+        <select class="form-select" name="storeId" [(ngModel)]="storeId">
+          <option [ngValue]="null">-- Select a store --</option>
+          <option *ngFor="let s of stores" [ngValue]="s.storeId">
+            #{{ s.storeId }} — {{ s.categoryFocus }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Category</label>
+        <select class="form-select" name="categoryId" [(ngModel)]="categoryId">
+          <option [ngValue]="null">-- Select a category --</option>
+          <option *ngFor="let c of categories" [ngValue]="c.categoryID">
+            {{ c.name }} <span *ngIf="c.parentCategoryName">({{ c.parentCategoryName }})</span>
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="mt-3">
+      <button type="submit" class="btn btn-primary" [disabled]="saving">
+        <span *ngIf="!saving">Add product</span>
+        <span *ngIf="saving">Adding...</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="ss-card">
+  <div class="ss-card-header"><h2>All my products ({{ products.length }})</h2></div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Name</th>
+          <th>SKU</th>
+          <th>Price</th>
+          <th>Store</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of products">
+          <td>#{{ p.productID }}</td>
+          <td>{{ p.name }}</td>
+          <td>{{ p.sku }}</td>
+          <td>₹{{ p.price | number:'1.0-2' }}</td>
+          <td>#{{ p.storeID }}</td>
+        </tr>
+        <tr *ngIf="products.length === 0">
+          <td colspan="5" class="empty-row">No products yet. Click "Add a product" to get started.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

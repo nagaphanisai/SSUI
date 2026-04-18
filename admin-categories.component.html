@@ -1,0 +1,56 @@
+<h1 class="page-title">Categories</h1>
+<p class="subtitle">Create and view product categories</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card" style="max-width: 640px;">
+  <div class="ss-card-header"><h2>Create a category</h2></div>
+  <form (ngSubmit)="createCategory()">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" name="name" [(ngModel)]="newName">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Parent (optional)</label>
+        <select class="form-select" [(ngModel)]="newParentId" name="parentId">
+          <option [ngValue]="null">-- Top-level --</option>
+          <option *ngFor="let c of flatCategories" [ngValue]="c.categoryID">{{ c.name }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="mt-3">
+      <button class="btn btn-primary" type="submit" [disabled]="saving">
+        <span *ngIf="!saving">Create</span>
+        <span *ngIf="saving">Creating...</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="ss-card">
+  <div class="ss-card-header"><h2>All categories ({{ flatCategories.length }})</h2></div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Parent</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of flatCategories">
+          <td>#{{ c.categoryID }}</td>
+          <td>{{ c.name }}</td>
+          <td>{{ c.parentCategoryName || '—' }}</td>
+        </tr>
+        <tr *ngIf="flatCategories.length === 0">
+          <td colspan="3" class="empty-row">No categories yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

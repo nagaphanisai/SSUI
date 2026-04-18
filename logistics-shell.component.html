@@ -1,0 +1,27 @@
+<div class="app-layout">
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <i class="bi bi-truck"></i>
+      <span>Logistics</span>
+    </div>
+    <ul class="nav-list">
+      <li><a routerLink="/logistics/shipments" routerLinkActive="active"><i class="bi bi-box-seam"></i> Shipments</a></li>
+    </ul>
+  </nav>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="topbar-title">ShopSphere — Logistics</div>
+      <div class="topbar-user">
+        <span class="user-name"><i class="bi bi-person-circle"></i> {{ userName || 'Logistics' }}</span>
+        <button class="btn btn-sm btn-outline-danger" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

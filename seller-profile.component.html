@@ -1,0 +1,39 @@
+<h1 class="page-title">My Profile</h1>
+<p class="subtitle">Your seller account information</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+<div class="ss-card" *ngIf="loading">
+  <p class="text-muted-2 mb-0"><i class="bi bi-hourglass-split"></i> Loading...</p>
+</div>
+
+<div class="ss-card" *ngIf="!loading && profile" style="max-width: 640px;">
+  <div class="ss-card-header"><h2>Account details</h2></div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Name</label>
+      <div class="profile-value">{{ userName }}</div>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Seller ID</label>
+      <div class="profile-value">#{{ profile.sellerId }}</div>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Business name</label>
+      <div class="profile-value">{{ profile.storeName }}</div>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Compliance status</label>
+      <div>
+        <span class="badge-status" [ngClass]="getStatusClass(profile.complianceStatus)">
+          {{ profile.complianceStatus }}
+        </span>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="profile.rejectionReason">
+      <label class="form-label">Rejection reason</label>
+      <div class="profile-value text-danger">{{ profile.rejectionReason }}</div>
+    </div>
+  </div>
+</div>

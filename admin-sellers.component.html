@@ -1,0 +1,56 @@
+<h1 class="page-title">Sellers</h1>
+<p class="subtitle">Approve or reject seller accounts</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card">
+  <div class="ss-card-header">
+    <h2>All sellers ({{ sellers.length }})</h2>
+    <button class="btn btn-sm btn-outline-secondary" (click)="load()">
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr><th>ID</th><th>Store name</th><th>Status</th><th>Rejection reason</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let s of sellers">
+          <tr>
+            <td>#{{ s.sellerId }}</td>
+            <td>{{ s.storeName }}</td>
+            <td><span class="badge-status" [ngClass]="getStatusClass(s.complianceStatus)">{{ s.complianceStatus }}</span></td>
+            <td>{{ s.rejectionReason || '—' }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-success me-1"
+                      *ngIf="s.complianceStatus === 'Pending'"
+                      (click)="approve(s.sellerId)">Approve</button>
+              <button class="btn btn-sm btn-outline-danger"
+                      *ngIf="s.complianceStatus === 'Pending'"
+                      (click)="openReject(s.sellerId)">Reject</button>
+              <span *ngIf="s.complianceStatus !== 'Pending'" class="text-muted-2">—</span>
+            </td>
+          </tr>
+          <tr *ngIf="rejectingSellerId === s.sellerId">
+            <td colspan="5" style="background: #f8fafd;">
+              <label class="form-label">Rejection reason</label>
+              <textarea class="form-control mb-2" rows="2" [(ngModel)]="rejectReason"></textarea>
+              <button class="btn btn-sm btn-danger me-2" (click)="submitReject()">Submit rejection</button>
+              <button class="btn btn-sm btn-outline-secondary" (click)="closeReject()">Cancel</button>
+            </td>
+          </tr>
+        </ng-container>
+        <tr *ngIf="sellers.length === 0">
+          <td colspan="5" class="empty-row">No sellers yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

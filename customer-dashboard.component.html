@@ -1,0 +1,42 @@
+<h1 class="page-title">Welcome back</h1>
+<p class="subtitle">Start shopping or check your orders</p>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="stat-tile">
+      <div class="stat-icon bg-primary-soft"><i class="bi bi-receipt"></i></div>
+      <div>
+        <div class="stat-label">Total orders</div>
+        <div class="stat-value">{{ totalOrders }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-tile">
+      <div class="stat-icon bg-success-soft"><i class="bi bi-cart"></i></div>
+      <div>
+        <div class="stat-label">Cart items</div>
+        <div class="stat-value">{{ cartItems }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-tile">
+      <div class="stat-icon bg-warning-soft"><i class="bi bi-bell"></i></div>
+      <div>
+        <div class="stat-label">Unread notifications</div>
+        <div class="stat-value">{{ unreadNotifications }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ss-card">
+  <div class="ss-card-header"><h2>Quick actions</h2></div>
+  <div class="d-flex gap-2 flex-wrap">
+    <a class="btn btn-outline-primary" routerLink="/customer/products"><i class="bi bi-bag"></i> Browse products</a>
+    <a class="btn btn-outline-primary" routerLink="/customer/cart"><i class="bi bi-cart"></i> View cart</a>
+    <a class="btn btn-outline-primary" routerLink="/customer/orders"><i class="bi bi-receipt"></i> My orders</a>
+    <a class="btn btn-outline-primary" routerLink="/customer/policies"><i class="bi bi-file-text"></i> Read policies</a>
+  </div>
+</div>

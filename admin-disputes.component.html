@@ -1,0 +1,54 @@
+<h1 class="page-title">Disputes</h1>
+<p class="subtitle">Review and resolve customer disputes</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card">
+  <div class="ss-card-header">
+    <h2>All disputes ({{ disputes.length }})</h2>
+    <button class="btn btn-sm btn-outline-secondary" (click)="load()">
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr><th>ID</th><th>Order</th><th>Reason</th><th>Status</th><th>Resolution</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let d of disputes">
+          <tr>
+            <td>#{{ d.disputeID }}</td>
+            <td>#{{ d.orderID }}</td>
+            <td>{{ d.reason }}</td>
+            <td><span class="badge-status" [ngClass]="getStatusClass(d.status)">{{ d.status }}</span></td>
+            <td>{{ d.resolutionNote || '—' }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary"
+                      *ngIf="d.status === 'Raised'"
+                      (click)="openResolve(d.disputeID)">Resolve</button>
+              <span *ngIf="d.status !== 'Raised'" class="text-muted-2">—</span>
+            </td>
+          </tr>
+          <tr *ngIf="resolvingId === d.disputeID">
+            <td colspan="6" style="background: #f8fafd;">
+              <label class="form-label">Resolution note</label>
+              <textarea class="form-control mb-2" rows="2" [(ngModel)]="resolutionNote"></textarea>
+              <button class="btn btn-sm btn-primary me-2" (click)="submit()">Submit</button>
+              <button class="btn btn-sm btn-outline-secondary" (click)="closeResolve()">Cancel</button>
+            </td>
+          </tr>
+        </ng-container>
+        <tr *ngIf="disputes.length === 0">
+          <td colspan="6" class="empty-row">No disputes raised.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

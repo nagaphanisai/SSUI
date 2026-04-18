@@ -1,0 +1,17 @@
+<h1 class="page-title">Marketplace policies</h1>
+<p class="subtitle">Published by ShopSphere administration</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+<div class="ss-card" *ngIf="loading">
+  <p class="text-muted-2 mb-0"><i class="bi bi-hourglass-split"></i> Loading...</p>
+</div>
+
+<div class="ss-card" *ngIf="!loading && policies.length === 0">
+  <p class="mb-0">No policies published yet.</p>
+</div>
+
+<div class="ss-card" *ngFor="let p of policies">
+  <div class="ss-card-header"><h2>{{ p.title }}</h2></div>
+  <p style="white-space: pre-line;">{{ p.content }}</p>
+</div>

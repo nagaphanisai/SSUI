@@ -1,0 +1,33 @@
+<div class="app-layout">
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <i class="bi bi-shop"></i>
+      <span>Seller Panel</span>
+    </div>
+    <ul class="nav-list">
+      <li><a routerLink="/seller/dashboard" routerLinkActive="active"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li><a routerLink="/seller/stores" routerLinkActive="active"><i class="bi bi-shop-window"></i> My Stores</a></li>
+      <li><a routerLink="/seller/products" routerLinkActive="active"><i class="bi bi-box-seam"></i> Products</a></li>
+      <li><a routerLink="/seller/inventory" routerLinkActive="active"><i class="bi bi-boxes"></i> Inventory</a></li>
+      <li><a routerLink="/seller/orders" routerLinkActive="active"><i class="bi bi-receipt"></i> Orders</a></li>
+      <li><a routerLink="/seller/returns" routerLinkActive="active"><i class="bi bi-arrow-return-left"></i> Returns</a></li>
+      <li><a routerLink="/seller/profile" routerLinkActive="active"><i class="bi bi-person-circle"></i> Profile</a></li>
+    </ul>
+  </nav>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="topbar-title">ShopSphere — Seller</div>
+      <div class="topbar-user">
+        <span class="user-name"><i class="bi bi-person-circle"></i> {{ userName || 'Seller' }}</span>
+        <button class="btn btn-sm btn-outline-danger" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

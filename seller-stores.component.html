@@ -1,0 +1,80 @@
+<h1 class="page-title">My Stores</h1>
+<p class="subtitle">Create stores, manage their status, and request admin approval</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="action-bar">
+  <button class="btn btn-primary" (click)="toggleForm()">
+    <i class="bi" [ngClass]="showForm ? 'bi-x-circle' : 'bi-plus-circle'"></i>
+    {{ showForm ? 'Cancel' : 'Add a store' }}
+  </button>
+</div>
+
+<div class="ss-card" *ngIf="showForm">
+  <div class="ss-card-header"><h2>New store</h2></div>
+  <form (ngSubmit)="createStore()">
+    <div class="row g-3">
+      <div class="col-md-8">
+        <label class="form-label">Category focus</label>
+        <input type="text" class="form-control" name="categoryFocus"
+               [(ngModel)]="newCategoryFocus" placeholder="e.g. Electronics, Fashion, Home">
+      </div>
+      <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100" [disabled]="saving">
+          <span *ngIf="!saving">Submit for approval</span>
+          <span *ngIf="saving">Submitting...</span>
+        </button>
+      </div>
+    </div>
+    <small class="text-muted-2 d-block mt-2">
+      New stores start in "Pending" status and must be approved by an admin before products can be sold.
+    </small>
+  </form>
+</div>
+
+<div class="ss-card">
+  <div class="ss-card-header"><h2>All my stores ({{ stores.length }})</h2></div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr>
+          <th>Store ID</th>
+          <th>Category focus</th>
+          <th>Rating</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let store of stores">
+          <td>#{{ store.storeId }}</td>
+          <td>{{ store.categoryFocus }}</td>
+          <td>
+            <i class="bi bi-star-fill text-warning"></i>
+            {{ store.rating || 0 | number:'1.0-1' }}
+          </td>
+          <td><span class="badge-status" [ngClass]="getStatusClass(store.status)">{{ store.status }}</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline-secondary me-1"
+                    *ngIf="store.status === 'Active' || store.status === 'Inactive'"
+                    (click)="toggleStatus(store)">
+              {{ store.status === 'Active' ? 'Deactivate' : 'Activate' }}
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteStore(store)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="stores.length === 0">
+          <td colspan="5" class="empty-row">No stores yet. Click "Add a store" to get started.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

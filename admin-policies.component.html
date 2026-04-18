@@ -1,0 +1,52 @@
+<h1 class="page-title">Policies</h1>
+<p class="subtitle">Publish policies visible to customers and sellers</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card" style="max-width: 800px;">
+  <div class="ss-card-header">
+    <h2>{{ editingId ? 'Edit policy' : 'New policy' }}</h2>
+    <button *ngIf="editingId" class="btn btn-sm btn-outline-secondary" (click)="resetForm()">
+      Cancel edit
+    </button>
+  </div>
+
+  <label class="form-label">Title</label>
+  <input type="text" class="form-control mb-3" [(ngModel)]="title" name="title">
+
+  <label class="form-label">Content</label>
+  <textarea class="form-control mb-3" rows="5" [(ngModel)]="content" name="content"></textarea>
+
+  <button class="btn btn-primary" (click)="save()" [disabled]="saving">
+    <span *ngIf="!saving"><i class="bi bi-save"></i> {{ editingId ? 'Update' : 'Create' }}</span>
+    <span *ngIf="saving">Saving...</span>
+  </button>
+</div>
+
+<div class="ss-card">
+  <div class="ss-card-header"><h2>All policies ({{ policies.length }})</h2></div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div *ngIf="!loading && policies.length === 0" class="empty-row">No policies yet.</div>
+
+  <div *ngFor="let p of policies" class="policy-item">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <h3>{{ p.title }}</h3>
+        <p class="mb-0" style="white-space: pre-line;">{{ p.content }}</p>
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-sm btn-outline-primary me-1" (click)="edit(p)">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-danger" (click)="delete(p)">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

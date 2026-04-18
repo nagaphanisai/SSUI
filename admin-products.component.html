@@ -1,0 +1,32 @@
+<h1 class="page-title">All products</h1>
+<p class="subtitle">Platform-wide product catalog</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+<div class="ss-card">
+  <div class="ss-card-header"><h2>Products ({{ products.length }})</h2></div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>SKU</th><th>Price</th><th>Store</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of products">
+          <td>#{{ p.productID }}</td>
+          <td>{{ p.name }}</td>
+          <td>{{ p.sku }}</td>
+          <td>₹{{ p.price | number:'1.0-2' }}</td>
+          <td>#{{ p.storeID }}</td>
+        </tr>
+        <tr *ngIf="products.length === 0">
+          <td colspan="5" class="empty-row">No products yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

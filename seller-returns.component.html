@@ -1,0 +1,50 @@
+<h1 class="page-title">Returns & Refunds</h1>
+<p class="subtitle">Return requests raised by customers for your products</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+<div class="ss-card">
+  <div class="ss-card-header">
+    <h2>All returns ({{ returns.length }})</h2>
+    <button class="btn btn-sm btn-outline-secondary" (click)="loadReturns()">
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr>
+          <th>Return ID</th>
+          <th>Order</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Requested</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of returns">
+          <td>#{{ r.returnID }}</td>
+          <td>#{{ r.orderID }}</td>
+          <td>{{ r.reason }}</td>
+          <td><span class="badge-status" [ngClass]="getStatusClass(r.status)">{{ r.status }}</span></td>
+          <td>{{ r.requestedDate | date:'short' }}</td>
+        </tr>
+        <tr *ngIf="returns.length === 0">
+          <td colspan="5" class="empty-row">No return requests yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-3">
+    <small class="text-muted-2">
+      <i class="bi bi-info-circle"></i>
+      Return decisions are processed by the platform admin. Refunds are issued automatically upon approval.
+    </small>
+  </div>
+</div>

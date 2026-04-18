@@ -1,0 +1,20 @@
+<h1 class="page-title">Complete your seller profile</h1>
+<p class="subtitle">Set up your business name to start adding stores and products</p>
+
+<div class="ss-card" style="max-width: 560px;">
+  <div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+  <div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label">Business name</label>
+      <input type="text" class="form-control" name="storeName" [(ngModel)]="storeName" required>
+      <small class="text-muted-2">This is the legal name of your seller account.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="loading">
+      <span *ngIf="!loading">Create seller profile</span>
+      <span *ngIf="loading">Creating...</span>
+    </button>
+  </form>
+</div>

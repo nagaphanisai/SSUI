@@ -1,0 +1,31 @@
+<h1 class="page-title">Customers</h1>
+<p class="subtitle">Registered customer accounts</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+<div class="ss-card">
+  <div class="ss-card-header"><h2>All customers ({{ customers.length }})</h2></div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of customers">
+          <td>#{{ c.userID }}</td>
+          <td>{{ c.name }}</td>
+          <td>{{ c.email }}</td>
+          <td>{{ c.phone }}</td>
+        </tr>
+        <tr *ngIf="customers.length === 0">
+          <td colspan="4" class="empty-row">No customers registered yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

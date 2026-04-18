@@ -1,0 +1,68 @@
+<h1 class="page-title">Your cart</h1>
+<p class="subtitle">Review items before checkout</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card" *ngIf="loading">
+  <p class="text-muted-2 mb-0"><i class="bi bi-hourglass-split"></i> Loading cart...</p>
+</div>
+
+<div class="ss-card" *ngIf="!loading && (!cart || cart.items.length === 0)">
+  <p class="mb-2">Your cart is empty.</p>
+  <a routerLink="/customer/products" class="btn btn-primary">
+    <i class="bi bi-bag"></i> Browse products
+  </a>
+</div>
+
+<div *ngIf="!loading && cart && cart.items.length > 0">
+  <div class="ss-card">
+    <div class="ss-card-header"><h2>Items ({{ cart.items.length }})</h2></div>
+
+    <div class="table-wrap">
+      <table class="ss-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit price</th>
+            <th>Subtotal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cart.items">
+            <td><strong>{{ item.productName }}</strong></td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.price | number:'1.0-2' }}</td>
+            <td>₹{{ (item.price * item.quantity) | number:'1.0-2' }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger" (click)="removeItem(item.productId)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="text-align: right; font-weight: 600;">Total</td>
+            <td style="font-weight: 700; color: #2e5aac; font-size: 1.1rem;">
+              ₹{{ getTotal() | number:'1.0-2' }}
+            </td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <a routerLink="/customer/products" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left"></i> Continue shopping
+    </a>
+    <button class="btn btn-primary" (click)="checkout()" [disabled]="processing">
+      <span *ngIf="!processing"><i class="bi bi-credit-card"></i> Checkout</span>
+      <span *ngIf="processing">Processing...</span>
+    </button>
+  </div>
+</div>

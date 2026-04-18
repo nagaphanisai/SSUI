@@ -1,0 +1,47 @@
+<h1 class="page-title">Returns & Refunds</h1>
+<p class="subtitle">Approve or reject customer return requests</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card">
+  <div class="ss-card-header">
+    <h2>All returns ({{ returns.length }})</h2>
+    <button class="btn btn-sm btn-outline-secondary" (click)="load()">
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted-2">
+    <i class="bi bi-hourglass-split"></i> Loading...
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="ss-table">
+      <thead>
+        <tr><th>ID</th><th>Order</th><th>Reason</th><th>Status</th><th>Requested</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of returns">
+          <td>#{{ r.returnID }}</td>
+          <td>#{{ r.orderID }}</td>
+          <td>{{ r.reason }}</td>
+          <td><span class="badge-status" [ngClass]="getStatusClass(r.status)">{{ r.status }}</span></td>
+          <td>{{ r.requestedDate | date:'short' }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-success me-1"
+                    *ngIf="r.status === 'Pending'"
+                    (click)="process(r.returnID, true)">Approve</button>
+            <button class="btn btn-sm btn-outline-danger"
+                    *ngIf="r.status === 'Pending'"
+                    (click)="process(r.returnID, false)">Reject</button>
+            <span *ngIf="r.status !== 'Pending'" class="text-muted-2">—</span>
+          </td>
+        </tr>
+        <tr *ngIf="returns.length === 0">
+          <td colspan="6" class="empty-row">No return requests yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

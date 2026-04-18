@@ -1,0 +1,29 @@
+<h1 class="page-title">Notifications</h1>
+<p class="subtitle">Updates about your orders, shipments, payments, and returns</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+<div class="ss-card" *ngIf="loading">
+  <p class="text-muted-2 mb-0"><i class="bi bi-hourglass-split"></i> Loading...</p>
+</div>
+
+<div class="ss-card" *ngIf="!loading && notifications.length === 0">
+  <p class="mb-0">You have no notifications yet.</p>
+</div>
+
+<div *ngIf="!loading && notifications.length > 0">
+  <div class="notif-item" *ngFor="let n of notifications"
+       [class.unread]="n.status === 'Unread'"
+       (click)="markAsRead(n)">
+    <div class="notif-icon">
+      <i class="bi" [ngClass]="iconForCategory(n.category)"></i>
+    </div>
+    <div class="notif-body">
+      <div class="notif-message">{{ n.message }}</div>
+      <div class="notif-meta">
+        <span class="badge-status" [ngClass]="getStatusClass(n.status)">{{ n.status }}</span>
+        <span class="text-muted-2"> · {{ n.category }} · {{ n.createdDate | date:'short' }}</span>
+      </div>
+    </div>
+  </div>
+</div>

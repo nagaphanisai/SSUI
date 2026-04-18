@@ -1,0 +1,46 @@
+<h1 class="page-title">Payment</h1>
+<p class="subtitle">Complete the payment for your placed orders</p>
+
+<div class="ss-alert error" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="ss-alert success" *ngIf="successMsg">{{ successMsg }}</div>
+
+<div class="ss-card" *ngIf="loading">
+  <p class="text-muted-2 mb-0"><i class="bi bi-hourglass-split"></i> Loading...</p>
+</div>
+
+<div class="ss-card" *ngIf="!loading && pendingOrders.length === 0">
+  <p class="mb-0">No orders awaiting payment. Place an order from your
+    <a routerLink="/customer/cart">cart</a>.</p>
+</div>
+
+<div class="ss-card" *ngIf="!loading && pendingOrders.length > 0" style="max-width: 560px;">
+  <div class="ss-card-header"><h2>Make a payment</h2></div>
+
+  <div class="mb-3">
+    <label class="form-label">Order</label>
+    <select class="form-select" [(ngModel)]="selectedOrderId" (change)="onOrderSelect()">
+      <option [ngValue]="null">-- Select an order --</option>
+      <option *ngFor="let o of pendingOrders" [ngValue]="o.orderID">
+        Order #{{ o.orderID }} — ₹{{ o.totalAmount | number:'1.0-2' }}
+      </option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Amount</label>
+    <input type="text" class="form-control" [value]="'₹' + (selectedOrderAmount | number:'1.0-2')" readonly>
+    <small class="text-muted-2">Auto-filled from the selected order.</small>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Payment method</label>
+    <select class="form-select" [(ngModel)]="method">
+      <option *ngFor="let m of methods" [value]="m">{{ m }}</option>
+    </select>
+  </div>
+
+  <button class="btn btn-primary w-100" (click)="pay()" [disabled]="processing || !selectedOrderId">
+    <span *ngIf="!processing"><i class="bi bi-check-circle"></i> Pay now</span>
+    <span *ngIf="processing">Processing...</span>
+  </button>
+</div>
